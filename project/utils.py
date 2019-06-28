@@ -2,6 +2,7 @@ import nltk
 import pickle
 import re
 import numpy as np
+import pandas as pd
 
 nltk.download('stopwords')
 from nltk.corpus import stopwords
@@ -46,15 +47,18 @@ def load_embeddings(embeddings_path):
     # Note that here you also need to know the dimension of the loaded embeddings.
     # When you load the embeddings, use numpy.float32 type as dtype
 
-    ########################
-    #### YOUR CODE HERE ####
-    ########################
-
+    dataset=pd.read_csv('textspace.tsv',sep='\t',header=None)
+    l=dataset.to_numpy()
+    starspace_embeddings=defaultdict(list)
+    for i in range(len(l)):
+      starspace_embeddings[l[i][0]]=l[i][1:len(l[0])].astype('float32')
+    
+    return starspace_embeddings,len(l[0]-1)
     # remove this when you're done
-    raise NotImplementedError(
+    '''raise NotImplementedError(
         "Open utils.py and fill with your code. In case of Google Colab, download"
         "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
+        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")'''
 
 
 def question_to_vec(question, embeddings, dim):
@@ -62,15 +66,22 @@ def question_to_vec(question, embeddings, dim):
     
     # Hint: you have already implemented exactly this function in the 3rd assignment.
 
-    ########################
-    #### YOUR CODE HERE ####
-    ########################
+    question=question.split()
+    vector=np.zeros(dim)
+    n=0
+    for word in question:
+      if word in embeddings:
+        vector+=embeddings[word]
+        n+=1
+    if n!=0:
+      vector=vector/n
+    return vector
 
     # remove this when you're done
-    raise NotImplementedError(
+   ''' raise NotImplementedError(
         "Open utils.py and fill with your code. In case of Google Colab, download"
         "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
+        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")'''
 
 
 def unpickle_file(filename):
