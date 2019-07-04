@@ -2,7 +2,6 @@ import os
 from sklearn.metrics.pairwise import pairwise_distances_argmin
 
 from chatterbot import ChatBot
-from ChatBot import chatbot
 from utils import *
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -68,7 +67,7 @@ class DialogueManager(object):
         # It could be done by creating ChatBot with the *trainer* parameter equals 
         # "chatterbot.trainers.ChatterBotCorpusTrainer"
         # and then calling *train* function with "chatterbot.corpus.english" param
-        
+        chatbot=Chatbot('tetransbot')
         trainer = chatterbot.trainers.ChatterBotCorpusTrainer(chatbot)
         self.chitchat_bot=trainer.train("chatterbot.corpus.english")
        
